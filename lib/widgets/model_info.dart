@@ -24,14 +24,14 @@ class ModelInfo extends StatelessWidget {
             Expanded(
               child: ElevatedButton(
                 onPressed: onInitialize,
-                child: const Text('Initialize Model'),
+                child: const Text('初始化模型'),
               ),
             ),
             const SizedBox(width: 10),
             Expanded(
               child: ElevatedButton(
                 onPressed: onInitializeLora,
-                child: const Text('Load LORA'),
+                child: const Text('加载 LoRA'),
               ),
             ),
           ],
