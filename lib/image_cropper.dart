@@ -220,7 +220,7 @@ class _ImageCropperState extends State<ImageCropper> {
     if (originalImage == null) {
       // Handle error: Could not decode image
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error: Could not decode image.')),
+        const SnackBar(content: Text('错误：无法解码图片。')),
       );
       return;
     }
@@ -318,11 +318,11 @@ class _ImageCropperState extends State<ImageCropper> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Crop &amp; Resize Image'),
+        title: const Text('裁剪并调整图片大小'),
         actions: [
           ShadButton.ghost(
             onPressed: _performCrop,
-            child: const Text('Apply'),
+            child: const Text('应用'),
           ),
         ],
       ),
@@ -400,7 +400,7 @@ class _ImageCropperState extends State<ImageCropper> {
             const SizedBox(height: 20),
 
             // --- Sliders ---
-            Text('Width: $_currentCropWidth px'),
+            Text('宽度：$_currentCropWidth px'),
             ShadSlider(
               min: 64,
               max: _maxCropWidth.toDouble(),
@@ -429,7 +429,7 @@ class _ImageCropperState extends State<ImageCropper> {
               },
             ),
             const SizedBox(height: 10),
-            Text('Height: $_currentCropHeight px'),
+            Text('高度：$_currentCropHeight px'),
             ShadSlider(
               min: 64,
               max: _maxCropHeight.toDouble(),

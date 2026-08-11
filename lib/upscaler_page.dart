@@ -77,7 +77,7 @@ class _UpscalerPageState extends State<UpscalerPage> {
         .getDirectoryPath(initialDirectory: modelDirPath);
 
     if (selectedDir == null) {
-      _showTemporaryError('No directory selected');
+      _showTemporaryError('未选择目录');
       return;
     }
 
@@ -88,7 +88,7 @@ class _UpscalerPageState extends State<UpscalerPage> {
         .toList();
 
     if (modelFiles.isEmpty) {
-      _showTemporaryError('No upscaler model found in selected directory');
+      _showTemporaryError('所选目录中未找到放大器模型');
       return;
     }
 
@@ -97,7 +97,7 @@ class _UpscalerPageState extends State<UpscalerPage> {
       builder: (BuildContext context) {
         return ShadDialog.alert(
           constraints: const BoxConstraints(maxWidth: 400),
-          title: const Text('Select Upscaler Model'),
+          title: const Text('选择放大器模型'),
           description: SizedBox(
             height: 300,
             child: Material(
@@ -105,11 +105,11 @@ class _UpscalerPageState extends State<UpscalerPage> {
               child: ShadTable.list(
                 header: const [
                   ShadTableCell.header(
-                    child: Text('Model'),
+                    child: Text('模型'),
                   ),
                   ShadTableCell.header(
                     alignment: Alignment.centerRight,
-                    child: Text('Size'),
+                    child: Text('尺寸'),
                   ),
                 ],
                 columnSpanExtent: (index) {
@@ -148,7 +148,7 @@ class _UpscalerPageState extends State<UpscalerPage> {
           actions: [
             ShadButton.outline(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: const Text('取消'),
             ),
           ],
         );
@@ -156,7 +156,7 @@ class _UpscalerPageState extends State<UpscalerPage> {
     );
 
     if (selectedModel == null) {
-      _showTemporaryError('No model selected');
+      _showTemporaryError('未选择模型');
       return;
     }
 
@@ -202,7 +202,7 @@ class _UpscalerPageState extends State<UpscalerPage> {
       final decodedImage = img.decodeImage(bytes);
 
       if (decodedImage == null) {
-        _showTemporaryError('Failed to decode image');
+        _showTemporaryError('无法解码图片');
         return;
       }
 
@@ -231,12 +231,12 @@ class _UpscalerPageState extends State<UpscalerPage> {
 
   Future<void> _upscaleImage() async {
     if (_inputImage == null || _processedInputBytes == null) {
-      _showTemporaryError('Please select an image first');
+      _showTemporaryError('请先选择图片');
       return;
     }
 
     if (_processor == null) {
-      _showTemporaryError('Please load an upscaler model first');
+      _showTemporaryError('请先加载放大器模型');
       return;
     }
 
@@ -256,7 +256,7 @@ class _UpscalerPageState extends State<UpscalerPage> {
     } catch (e) {
       setState(() {
         _isProcessing = false;
-        _showTemporaryError('Error processing image: $e');
+        _showTemporaryError('处理图片出错：$e');
       });
     }
   }
@@ -281,7 +281,7 @@ class _UpscalerPageState extends State<UpscalerPage> {
               tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
             ),
           ),
-          title: const Text('Image Upscaler',
+          title: const Text('图片放大器',
               style: TextStyle(fontWeight: FontWeight.bold)),
           backgroundColor: theme.colorScheme.background,
           elevation: 0,
@@ -318,7 +318,7 @@ class _UpscalerPageState extends State<UpscalerPage> {
               ListTile(
                 leading: const Icon(LucideIcons.type, size: 32),
                 title: const Text(
-                  'Text to Image',
+                  '文生图',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 onTap: () {
@@ -337,7 +337,7 @@ class _UpscalerPageState extends State<UpscalerPage> {
               ListTile(
                 leading: const Icon(LucideIcons.images, size: 32),
                 title: const Text(
-                  'Image to Image',
+                  '图生图',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 onTap: () {
@@ -364,7 +364,7 @@ class _UpscalerPageState extends State<UpscalerPage> {
               ),
               ListTile(
                 leading: const Icon(LucideIcons.aperture, size: 32),
-                title: const Text('Photomaker',
+                title: const Text('PhotoMaker',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 onTap: () {
                   if (_processor != null) {
@@ -381,7 +381,7 @@ class _UpscalerPageState extends State<UpscalerPage> {
               ),
               ListTile(
                 leading: const Icon(Icons.draw, size: 32),
-                title: const Text('Scribble to Image',
+                title: const Text('涂鸦生图',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 onTap: () {
                   if (_processor != null) {
@@ -398,7 +398,7 @@ class _UpscalerPageState extends State<UpscalerPage> {
               ),
               ListTile(
                 leading: const Icon(LucideIcons.palette, size: 32),
-                title: const Text('Inpainting',
+                title: const Text('局部重绘',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 onTap: () {
                   if (_processor != null) {
@@ -415,7 +415,7 @@ class _UpscalerPageState extends State<UpscalerPage> {
               ),
               ListTile(
                 leading: const Icon(LucideIcons.expand, size: 32),
-                title: const Text('Outpainting',
+                title: const Text('外补绘制（扩图）',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 onTap: () {
                   if (_processor != null) {
@@ -448,7 +448,7 @@ class _UpscalerPageState extends State<UpscalerPage> {
                               TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: '${entry.key} loaded ',
+                                    text: '${entry.key} 已加载 ',
                                     style: theme.textTheme.p.copyWith(
                                       color: Colors.green,
                                       fontWeight: FontWeight.bold,
@@ -533,7 +533,7 @@ class _UpscalerPageState extends State<UpscalerPage> {
                     child: ShadButton(
                       enabled: !_isProcessing,
                       onPressed: _initializeProcessor,
-                      child: const Text('Load Model'),
+                      child: const Text('加载模型'),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -541,7 +541,7 @@ class _UpscalerPageState extends State<UpscalerPage> {
                     child: ShadButton(
                       enabled: !_isProcessing,
                       onPressed: _upscaleImage,
-                      child: const Text('Upscale'),
+                      child: const Text('放大'),
                     ),
                   ),
                 ],

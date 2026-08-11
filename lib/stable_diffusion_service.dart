@@ -59,18 +59,18 @@ class StableDiffusionService {
       final result = await FilePicker.platform
           .pickFiles(type: FileType.any, allowMultiple: false);
 
-      if (result == null) return "No LORA file selected";
+      if (result == null) return "未选择 LoRA 文件";
 
       loraPath = result.files.single.path!;
       final filename = result.files.single.name;
 
       if (!filename.endsWith('.safetensors')) {
-        return "Please select a .safetensors file for LORA";
+        return "请为 LoRA 选择 .safetensors 文件";
       }
 
       return "LORA model selected: ${loraPath!.split('/').last}";
     } catch (e) {
-      return "Error picking LORA file: $e";
+      return "选择 LoRA 文件出错：$e";
     }
   }
 
@@ -79,17 +79,17 @@ class StableDiffusionService {
       final result = await FilePicker.platform
           .pickFiles(type: FileType.any, allowMultiple: false);
 
-      if (result == null) return "No TAESD file selected";
+      if (result == null) return "未选择 TAESD 文件";
 
       final filename = result.files.single.name;
       if (!filename.endsWith('.safetensors')) {
-        return "Please select a .safetensors file for TAESD";
+        return "请为 TAESD 选择 .safetensors 文件";
       }
 
       taesdPath = result.files.single.path!;
       return "TAESD model selected: ${taesdPath!.split('/').last}";
     } catch (e) {
-      return "Error picking TAESD file: $e";
+      return "选择 TAESD 文件出错：$e";
     }
   }
 

@@ -289,7 +289,7 @@ class _InpaintingPageState extends State<InpaintingPage>
     final decodedImage = img.decodeImage(bytes);
 
     if (decodedImage == null) {
-      _showTemporaryError('Failed to decode image');
+      _showTemporaryError('无法解码图片');
       return;
     }
 
@@ -322,7 +322,7 @@ class _InpaintingPageState extends State<InpaintingPage>
 
   Future<void> _loadMask() async {
     if (_inputImage == null) {
-      _showTemporaryError('Please select an image first');
+      _showTemporaryError('请先选择图片');
       return;
     }
 
@@ -334,7 +334,7 @@ class _InpaintingPageState extends State<InpaintingPage>
       final decodedImage = img.decodeImage(bytes);
 
       if (decodedImage == null) {
-        _showTemporaryError('Failed to decode mask image');
+        _showTemporaryError('无法解码蒙版图片');
         return;
       }
 
@@ -342,7 +342,7 @@ class _InpaintingPageState extends State<InpaintingPage>
       if (decodedImage.width != _inputWidth ||
           decodedImage.height != _inputHeight) {
         _showTemporaryError(
-            'Mask dimensions must match input image dimensions');
+            '蒙版尺寸必须与输入图片尺寸一致');
         return;
       }
 
@@ -405,7 +405,7 @@ class _InpaintingPageState extends State<InpaintingPage>
         await maskImage.toByteData(format: ui.ImageByteFormat.rawRgba);
 
     if (byteData == null) {
-      throw Exception('Failed to generate mask data from strokes');
+      throw Exception('从笔画生成蒙版数据失败');
     }
 
     final bytes = byteData.buffer.asUint8List();
@@ -447,7 +447,7 @@ class _InpaintingPageState extends State<InpaintingPage>
       onModelLoaded: () {
         setState(() {
           isModelLoading = false;
-          _message = 'Model initialized successfully';
+          _message = '模型初始化成功';
           loadedComponents['Model'] = true;
           loadingText = '';
           _loadingError = ''; // Clear any previous loading errors on success
@@ -485,7 +485,7 @@ class _InpaintingPageState extends State<InpaintingPage>
         setState(() {
           this.progress = progress.progress;
           status =
-              'Generating image... ${(progress.progress * 100).toInt()}% • Step ${progress.step}/${progress.totalSteps} • ${progress.time.toStringAsFixed(1)}s';
+              '正在生成图片… ${(progress.progress * 100).toInt()}% • 第 ${progress.step}/${progress.totalSteps} 步 • ${progress.time.toStringAsFixed(1)}s';
         });
       },
     );
@@ -502,8 +502,8 @@ class _InpaintingPageState extends State<InpaintingPage>
         _generatedImage = Image.memory(bytes!.buffer.asUint8List());
         // Update status using the extracted time
         status = generationTime != null
-            ? 'Generation completed in $generationTime'
-            : 'Generation complete';
+            ? '生成完成，用时 $generationTime'
+            : '生成完成';
         _showLogsButton = true; // Show the log button
       });
 
@@ -545,7 +545,7 @@ class _InpaintingPageState extends State<InpaintingPage>
 
       // Handle generation-specific errors separately if needed
       if (errorType == 'generationError') {
-        status = 'Generation failed: $errorMessage';
+        status = '生成失败：$errorMessage';
         isGenerating = false; // Stop generation indicator
       } else if (errorType == 'inputError') {
         status = '';
@@ -692,13 +692,13 @@ class _InpaintingPageState extends State<InpaintingPage>
       builder: (context) => StatefulBuilder(
         builder: (context, setState) => ShadDialog.alert(
           constraints: const BoxConstraints(maxWidth: 300),
-          title: const Text('Load Model Settings'),
+          title: const Text('加载模型设置'),
           description: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  const Text('Quantization Type:'),
+                  const Text('量化类型：'),
                   const SizedBox(width: 8),
                   Expanded(
                     child: ShadSelect<String>(
@@ -717,7 +717,7 @@ class _InpaintingPageState extends State<InpaintingPage>
               const SizedBox(height: 16),
               Row(
                 children: [
-                  const Text('Schedule:'),
+                  const Text('调度器：'),
                   const SizedBox(width: 8),
                   Expanded(
                     child: ShadSelect<String>(
@@ -753,7 +753,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                     });
                   }
                 },
-                label: const Text('Use Flash Attention'),
+                label: const Text('使用 Flash Attention'),
               ),
               // Display error message if it exists
               if (flashAttentionError != null)
@@ -774,7 +774,7 @@ class _InpaintingPageState extends State<InpaintingPage>
           actions: [
             ShadButton.outline(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: const Text('取消'),
             ),
             ShadButton(
               enabled: !(isModelLoading || isGenerating),
@@ -800,7 +800,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                       builder: (BuildContext context) {
                         return ShadDialog.alert(
                           constraints: const BoxConstraints(maxWidth: 400),
-                          title: const Text('Select Model'),
+                          title: const Text('选择模型'),
                           description: SizedBox(
                             height: 300,
                             child: Material(
@@ -808,11 +808,11 @@ class _InpaintingPageState extends State<InpaintingPage>
                               child: ShadTable.list(
                                 header: const [
                                   ShadTableCell.header(
-                                      child: Text('Model',
+                                      child: Text('模型',
                                           style: TextStyle(fontSize: 16))),
                                   ShadTableCell.header(
                                       alignment: Alignment.centerRight,
-                                      child: Text('Size',
+                                      child: Text('尺寸',
                                           style: TextStyle(fontSize: 16))),
                                 ],
                                 columnSpanExtent: (index) {
@@ -866,7 +866,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                           actions: [
                             ShadButton.outline(
                               onPressed: () => Navigator.pop(context),
-                              child: const Text('Cancel'),
+                              child: const Text('取消'),
                             ),
                           ],
                         );
@@ -892,7 +892,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                 }
                 Navigator.of(context).pop();
               },
-              child: const Text('Load Model'),
+              child: const Text('加载模型'),
             ),
           ],
         ),
@@ -911,7 +911,7 @@ class _InpaintingPageState extends State<InpaintingPage>
       final decodedImage = img.decodeImage(bytes);
 
       if (decodedImage == null) {
-        _showTemporaryError('Failed to decode image');
+        _showTemporaryError('无法解码图片');
         return;
       }
 
@@ -992,7 +992,7 @@ class _InpaintingPageState extends State<InpaintingPage>
 
   Future<void> _createMask() async {
     if (_inputImage == null) {
-      _showTemporaryError('Please select an image first');
+      _showTemporaryError('请先选择图片');
       return;
     }
     // Pass existing strokes to MaskEditor
@@ -1088,7 +1088,7 @@ class _InpaintingPageState extends State<InpaintingPage>
             tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
           ),
         ),
-        title: const Text('Inpainting',
+        title: const Text('局部重绘',
             style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: theme.colorScheme.background,
         elevation: 0,
@@ -1098,7 +1098,7 @@ class _InpaintingPageState extends State<InpaintingPage>
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
               child: Tooltip(
-                message: 'Unload Model & Reset',
+                message: '卸载模型并重置',
                 child: ShadButton.ghost(
                   icon: const Icon(
                     LucideIcons.powerOff,
@@ -1111,20 +1111,20 @@ class _InpaintingPageState extends State<InpaintingPage>
                           showShadDialog(
                             context: context,
                             builder: (context) => ShadDialog.alert(
-                              title: const Text('Confirm Unload'),
+                              title: const Text('确认卸载'),
                               description: const Text(
-                                  'Are you sure you want to unload the current model and reset all settings?'),
+                                  '确定要卸载当前模型并重置所有设置吗？'),
                               actions: [
                                 ShadButton.outline(
                                   onPressed: () => Navigator.of(context).pop(),
-                                  child: const Text('Cancel'),
+                                  child: const Text('取消'),
                                 ),
                                 ShadButton.destructive(
                                   onPressed: () {
                                     Navigator.of(context).pop(); // Close dialog
                                     _resetState(); // Call the reset function
                                   },
-                                  child: const Text('Confirm Unload'),
+                                  child: const Text('确认卸载'),
                                 ),
                               ],
                             ),
@@ -1165,7 +1165,7 @@ class _InpaintingPageState extends State<InpaintingPage>
             ),
             ListTile(
               leading: const Icon(LucideIcons.type, size: 32),
-              title: const Text('Text to Image',
+              title: const Text('文生图',
                   style: TextStyle(fontWeight: FontWeight.bold)),
               onTap: () {
                 if (_processor != null) {
@@ -1182,7 +1182,7 @@ class _InpaintingPageState extends State<InpaintingPage>
             ),
             ListTile(
               leading: const Icon(LucideIcons.images, size: 32),
-              title: const Text('Image to Image',
+              title: const Text('图生图',
                   style: TextStyle(fontWeight: FontWeight.bold)),
               onTap: () {
                 if (_processor != null) {
@@ -1198,7 +1198,7 @@ class _InpaintingPageState extends State<InpaintingPage>
             ),
             ListTile(
               leading: const Icon(LucideIcons.imageUpscale, size: 32),
-              title: const Text('Upscaler',
+              title: const Text('图片放大器',
                   style: TextStyle(fontWeight: FontWeight.bold)),
               onTap: () {
                 if (_processor != null) {
@@ -1214,7 +1214,7 @@ class _InpaintingPageState extends State<InpaintingPage>
             ),
             ListTile(
               leading: const Icon(LucideIcons.aperture, size: 32),
-              title: const Text('Photomaker',
+              title: const Text('PhotoMaker',
                   style: TextStyle(fontWeight: FontWeight.bold)),
               onTap: () {
                 if (_processor != null) {
@@ -1231,7 +1231,7 @@ class _InpaintingPageState extends State<InpaintingPage>
             ),
             ListTile(
               leading: const Icon(Icons.draw, size: 32),
-              title: const Text('Scribble to Image',
+              title: const Text('涂鸦生图',
                   style: TextStyle(fontWeight: FontWeight.bold)),
               onTap: () {
                 if (_processor != null) {
@@ -1247,7 +1247,7 @@ class _InpaintingPageState extends State<InpaintingPage>
             ),
             ListTile(
               leading: const Icon(LucideIcons.palette, size: 32),
-              title: const Text('Inpainting',
+              title: const Text('局部重绘',
                   style: TextStyle(fontWeight: FontWeight.bold)),
               tileColor: theme.colorScheme.secondary.withOpacity(0.2),
               onTap: () {
@@ -1256,7 +1256,7 @@ class _InpaintingPageState extends State<InpaintingPage>
             ),
             ListTile(
               leading: const Icon(LucideIcons.expand, size: 32),
-              title: const Text('Outpainting',
+              title: const Text('外补绘制（扩图）',
                   style: TextStyle(fontWeight: FontWeight.bold)),
               onTap: () {
                 if (_processor != null) {
@@ -1319,7 +1319,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                           TextSpan(
                             children: [
                               TextSpan(
-                                text: '${entry.key} loaded ',
+                                text: '${entry.key} 已加载 ',
                                 style: theme.textTheme.p.copyWith(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold,
@@ -1357,7 +1357,7 @@ class _InpaintingPageState extends State<InpaintingPage>
             // --- Backend Selection Row ---
             Row(
               children: [
-                const Text('Backend:'),
+                const Text('后端：'),
                 const SizedBox(width: 8),
                 Expanded(
                   child: ShadSelect<String>(
@@ -1379,13 +1379,13 @@ class _InpaintingPageState extends State<InpaintingPage>
                           showShadDialog(
                             context: context,
                             builder: (context) => ShadDialog.alert(
-                              title: const Text('Change Backend?'),
+                              title: const Text('切换后端？'),
                               description: const Text(
-                                  'Changing the backend requires unloading the current model and resetting settings. Proceed?'),
+                                  '切换后端需要卸载当前模型并重置设置，是否继续？'),
                               actions: [
                                 ShadButton.outline(
                                   onPressed: () => Navigator.of(context).pop(),
-                                  child: const Text('Cancel'),
+                                  child: const Text('取消'),
                                 ),
                                 ShadButton.destructive(
                                   onPressed: () {
@@ -1405,7 +1405,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                     print(
                                         "Inpainting: Backend changed to: $_selectedBackend");
                                   },
-                                  child: const Text('Confirm Change'),
+                                  child: const Text('确认切换'),
                                 ),
                               ],
                             ),
@@ -1437,7 +1437,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                 ShadButton(
                   enabled: !(isModelLoading || isGenerating),
                   onPressed: showModelLoadDialog,
-                  child: const Text('Load Model'),
+                  child: const Text('加载模型'),
                 ),
                 const SizedBox(width: 8),
                 if (_ramUsage.isNotEmpty)
@@ -1470,7 +1470,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                           builder: (BuildContext context) {
                             return ShadDialog.alert(
                               constraints: const BoxConstraints(maxWidth: 400),
-                              title: const Text('Select TAESD Model'),
+                              title: const Text('选择 TAESD 模型'),
                               description: SizedBox(
                                 height: 300,
                                 child: Material(
@@ -1478,11 +1478,11 @@ class _InpaintingPageState extends State<InpaintingPage>
                                   child: ShadTable.list(
                                     header: const [
                                       ShadTableCell.header(
-                                          child: Text('Model',
+                                          child: Text('模型',
                                               style: TextStyle(fontSize: 16))),
                                       ShadTableCell.header(
                                           alignment: Alignment.centerRight,
-                                          child: Text('Size',
+                                          child: Text('尺寸',
                                               style: TextStyle(fontSize: 16))),
                                     ],
                                     columnSpanExtent: (index) {
@@ -1539,7 +1539,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                               actions: [
                                 ShadButton.outline(
                                   onPressed: () => Navigator.pop(context),
-                                  child: const Text('Cancel'),
+                                  child: const Text('取消'),
                                 ),
                               ],
                             );
@@ -1569,7 +1569,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                       }
                     }
                   },
-                  child: const Text('Load TAESD'),
+                  child: const Text('加载 TAESD'),
                 ),
                 const SizedBox(width: 8),
                 ShadCheckbox(
@@ -1593,7 +1593,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                       }
                     });
                   },
-                  label: const Text('Use TAESD'),
+                  label: const Text('使用 TAESD'),
                 ),
               ],
             ),
@@ -1713,7 +1713,7 @@ class _InpaintingPageState extends State<InpaintingPage>
             // --- Sliders for Cropping ---
             if (_showCropUI) ...[
               const SizedBox(height: 16),
-              Text('Crop Width: $width px'),
+              Text('裁剪宽度：$width px'),
               ShadSlider(
                 min: 64,
                 max: _maxCropWidth.toDouble(),
@@ -1737,7 +1737,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                 },
               ),
               const SizedBox(height: 10),
-              Text('Crop Height: $height px'),
+              Text('裁剪高度：$height px'),
               ShadSlider(
                 min: 64,
                 max: _maxCropHeight.toDouble(),
@@ -1772,14 +1772,14 @@ class _InpaintingPageState extends State<InpaintingPage>
                   enabled: !(isModelLoading || isGenerating),
                   // Update button text based on whether a mask exists
                   child: Text(_maskData != null || _currentStrokes.isNotEmpty
-                      ? 'Edit Mask'
-                      : 'Create Mask'),
+                      ? "编辑蒙版"
+                      : "创建蒙版"),
                 ),
               ],
             ),
             if (_maskImageUi != null) ...[
               const SizedBox(height: 16),
-              const Text('Mask Preview:'),
+              const Text('蒙版预览：'),
               RawImage(
                   image: _maskImageUi!,
                   fit: BoxFit.contain), // Assume not null here
@@ -1787,7 +1787,7 @@ class _InpaintingPageState extends State<InpaintingPage>
               ShadCheckbox(
                 value: _invertMask,
                 onChanged: (v) => setState(() => _invertMask = v),
-                label: const Text('Invert Mask'),
+                label: const Text('反转蒙版'),
               ),
             ],
             // --- Advanced Model Options Accordion ---
@@ -1795,7 +1795,7 @@ class _InpaintingPageState extends State<InpaintingPage>
               children: [
                 ShadAccordionItem<Map<String, dynamic>>(
                   value: const {}, // Unique value for this item
-                  title: const Text('Advanced Model Options'),
+                  title: const Text('高级模型选项'),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -1860,7 +1860,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                     });
                                   }
                                 },
-                                child: const Text('Load Lora'),
+                                child: const Text('加载 LoRA'),
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -1969,7 +1969,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                             value: _isDiffusionModelType,
                             onChanged: (v) =>
                                 setState(() => _isDiffusionModelType = v),
-                            label: const Text('Standalone Model'),
+                            label: const Text('独立模型'),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -2006,7 +2006,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                           return ShadDialog.alert(
                                             constraints: const BoxConstraints(
                                                 maxWidth: 400),
-                                            title: const Text('Select Clip_L'),
+                                            title: const Text('选择 Clip_L'),
                                             description: SizedBox(
                                               height: 300,
                                               child: Material(
@@ -2014,13 +2014,13 @@ class _InpaintingPageState extends State<InpaintingPage>
                                                 child: ShadTable.list(
                                                   header: const [
                                                     ShadTableCell.header(
-                                                        child: Text('Model',
+                                                        child: Text('模型',
                                                             style: TextStyle(
                                                                 fontSize: 16))),
                                                     ShadTableCell.header(
                                                         alignment: Alignment
                                                             .centerRight,
-                                                        child: Text('Size',
+                                                        child: Text('尺寸',
                                                             style: TextStyle(
                                                                 fontSize: 16))),
                                                   ],
@@ -2095,7 +2095,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                               ShadButton.outline(
                                                 onPressed: () =>
                                                     Navigator.pop(context),
-                                                child: const Text('Cancel'),
+                                                child: const Text('取消'),
                                               ),
                                             ],
                                           );
@@ -2127,7 +2127,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                     }
                                   }
                                 },
-                                child: const Text('Load Clip_L'),
+                                child: const Text('加载 Clip_L'),
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -2162,7 +2162,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                           return ShadDialog.alert(
                                             constraints: const BoxConstraints(
                                                 maxWidth: 400),
-                                            title: const Text('Select Clip_G'),
+                                            title: const Text('选择 Clip_G'),
                                             description: SizedBox(
                                               height: 300,
                                               child: Material(
@@ -2170,13 +2170,13 @@ class _InpaintingPageState extends State<InpaintingPage>
                                                 child: ShadTable.list(
                                                   header: const [
                                                     ShadTableCell.header(
-                                                        child: Text('Model',
+                                                        child: Text('模型',
                                                             style: TextStyle(
                                                                 fontSize: 16))),
                                                     ShadTableCell.header(
                                                         alignment: Alignment
                                                             .centerRight,
-                                                        child: Text('Size',
+                                                        child: Text('尺寸',
                                                             style: TextStyle(
                                                                 fontSize: 16))),
                                                   ],
@@ -2251,7 +2251,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                               ShadButton.outline(
                                                 onPressed: () =>
                                                     Navigator.pop(context),
-                                                child: const Text('Cancel'),
+                                                child: const Text('取消'),
                                               ),
                                             ],
                                           );
@@ -2283,7 +2283,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                     }
                                   }
                                 },
-                                child: const Text('Load Clip_G'),
+                                child: const Text('加载 Clip_G'),
                               ),
                             ),
                           ],
@@ -2322,7 +2322,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                           return ShadDialog.alert(
                                             constraints: const BoxConstraints(
                                                 maxWidth: 400),
-                                            title: const Text('Select T5XXL'),
+                                            title: const Text('选择 T5XXL'),
                                             description: SizedBox(
                                               height: 300,
                                               child: Material(
@@ -2330,13 +2330,13 @@ class _InpaintingPageState extends State<InpaintingPage>
                                                 child: ShadTable.list(
                                                   header: const [
                                                     ShadTableCell.header(
-                                                        child: Text('Model',
+                                                        child: Text('模型',
                                                             style: TextStyle(
                                                                 fontSize: 16))),
                                                     ShadTableCell.header(
                                                         alignment: Alignment
                                                             .centerRight,
-                                                        child: Text('Size',
+                                                        child: Text('尺寸',
                                                             style: TextStyle(
                                                                 fontSize: 16))),
                                                   ],
@@ -2411,7 +2411,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                               ShadButton.outline(
                                                 onPressed: () =>
                                                     Navigator.pop(context),
-                                                child: const Text('Cancel'),
+                                                child: const Text('取消'),
                                               ),
                                             ],
                                           );
@@ -2443,7 +2443,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                     }
                                   }
                                 },
-                                child: const Text('Load T5XXL'),
+                                child: const Text('加载 T5XXL'),
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -2480,7 +2480,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                     });
                                   }
                                 },
-                                child: const Text('Load Embed'),
+                                child: const Text('加载 Embedding'),
                               ),
                             ),
                           ],
@@ -2517,7 +2517,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                           return ShadDialog.alert(
                                             constraints: const BoxConstraints(
                                                 maxWidth: 400),
-                                            title: const Text('Select VAE'),
+                                            title: const Text('选择 VAE'),
                                             description: SizedBox(
                                               height: 300,
                                               child: Material(
@@ -2525,13 +2525,13 @@ class _InpaintingPageState extends State<InpaintingPage>
                                                 child: ShadTable.list(
                                                   header: const [
                                                     ShadTableCell.header(
-                                                        child: Text('Model',
+                                                        child: Text('模型',
                                                             style: TextStyle(
                                                                 fontSize: 16))),
                                                     ShadTableCell.header(
                                                         alignment: Alignment
                                                             .centerRight,
-                                                        child: Text('Size',
+                                                        child: Text('尺寸',
                                                             style: TextStyle(
                                                                 fontSize: 16))),
                                                   ],
@@ -2606,7 +2606,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                               ShadButton.outline(
                                                 onPressed: () =>
                                                     Navigator.pop(context),
-                                                child: const Text('Cancel'),
+                                                child: const Text('取消'),
                                               ),
                                             ],
                                           );
@@ -2638,7 +2638,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                     }
                                   }
                                 },
-                                child: const Text('Load VAE'),
+                                child: const Text('加载 VAE'),
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -2647,7 +2647,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                               onChanged: (bool v) {
                                 if (_vaePath == null) {
                                   _showTemporaryError(
-                                      'Please load VAE model first');
+                                      '请先加载 VAE 模型');
                                   return;
                                 }
                                 setState(() {
@@ -2670,7 +2670,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                   }
                                 });
                               },
-                              label: const Text('Use VAE'),
+                              label: const Text('使用 VAE'),
                             ),
                           ],
                         ),
@@ -2689,13 +2689,13 @@ class _InpaintingPageState extends State<InpaintingPage>
             const SizedBox(height: 16),
             ShadInput(
               key: _promptFieldKey,
-              placeholder: const Text('Prompt'),
+              placeholder: const Text('提示词'),
               controller: _promptController,
               onChanged: (String? v) => setState(() => prompt = v ?? ''),
             ),
             const SizedBox(height: 16),
             ShadInput(
-              placeholder: const Text('Negative Prompt'),
+              placeholder: const Text('反向提示词'),
               onChanged: (String? v) =>
                   setState(() => negativePrompt = v ?? ''),
             ),
@@ -2706,7 +2706,7 @@ class _InpaintingPageState extends State<InpaintingPage>
               children: [
                 ShadAccordionItem<Map<String, dynamic>>(
                   value: const {}, // Unique value for this item
-                  title: const Text('Advanced Sampling Options'),
+                  title: const Text('高级采样选项'),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -2827,7 +2827,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                             ShadInput(
                               controller: _skipLayersController,
                               placeholder:
-                                  const Text('Skip Layers (e.g., 7,8,9)'),
+                                  const Text('跳过层（例如 7,8,9）'),
                               keyboardType: TextInputType.text,
                               onChanged: (String? v) {
                                 final text = v ?? '';
@@ -2840,7 +2840,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                 } else {
                                   setState(() {
                                     _skipLayersErrorText =
-                                        'Invalid format (use numbers separated by commas)';
+                                        '格式无效（请用逗号分隔数字）';
                                   });
                                 }
                               },
@@ -2864,7 +2864,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                         // Skip Layer Start Slider
                         Row(
                           children: [
-                            const Text('Skip Layer Start'),
+                            const Text('跳过层开始'),
                             const SizedBox(width: 8),
                             Expanded(
                               child: ShadSlider(
@@ -2887,7 +2887,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                         // Skip Layer End Slider
                         Row(
                           children: [
-                            const Text('Skip Layer End'),
+                            const Text('跳过层结束'),
                             const SizedBox(width: 8),
                             Expanded(
                               child: ShadSlider(
@@ -2917,7 +2917,7 @@ class _InpaintingPageState extends State<InpaintingPage>
             const SizedBox(height: 16),
             Row(
               children: [
-                const Text('Use ControlNet'),
+                const Text('使用 ControlNet'),
                 const SizedBox(width: 8),
                 ShadSwitch(
                   value: useControlNet,
@@ -2948,7 +2948,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                   );
                                 } else {
                                   print(
-                                      "Enabled ControlNet switch, but no ControlNet model loaded. No reload needed.");
+                                      "已启用 ControlNet 开关，但未加载 ControlNet 模型，无需重新加载。");
                                 }
                               } else {
                                 // Disabling ControlNet
@@ -2974,14 +2974,14 @@ class _InpaintingPageState extends State<InpaintingPage>
                                   loadedComponents.remove('ControlNet');
                                 } else {
                                   print(
-                                      "Disabled ControlNet switch, but no ControlNet model was loaded anyway. No reload needed.");
+                                      "已禁用 ControlNet 开关，但并未加载 ControlNet 模型，无需重新加载。");
                                   // Still remove the indicator if it somehow exists
                                   loadedComponents.remove('ControlNet');
                                 }
                               }
                             } else {
                               print(
-                                  "ControlNet switch toggled, but no main model loaded. No action taken.");
+                                  "ControlNet 开关已切换，但未加载主模型，未执行任何操作。");
                             }
                           });
                         },
@@ -2994,7 +2994,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                 children: [
                   ShadAccordionItem<Map<String, dynamic>>(
                     value: const {},
-                    title: const Text('ControlNet Options'),
+                    title: const Text('ControlNet 选项'),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
@@ -3035,7 +3035,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                               constraints: const BoxConstraints(
                                                   maxWidth: 400),
                                               title: const Text(
-                                                  'Select ControlNet Model'),
+                                                  '选择 ControlNet 模型'),
                                               description: SizedBox(
                                                 height: 300,
                                                 child: Material(
@@ -3043,14 +3043,14 @@ class _InpaintingPageState extends State<InpaintingPage>
                                                   child: ShadTable.list(
                                                     header: const [
                                                       ShadTableCell.header(
-                                                          child: Text('Model',
+                                                          child: Text('模型',
                                                               style: TextStyle(
                                                                   fontSize:
                                                                       16))),
                                                       ShadTableCell.header(
                                                           alignment: Alignment
                                                               .centerRight,
-                                                          child: Text('Size',
+                                                          child: Text('尺寸',
                                                               style: TextStyle(
                                                                   fontSize:
                                                                       16))),
@@ -3125,7 +3125,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                                 ShadButton.outline(
                                                   onPressed: () =>
                                                       Navigator.pop(context),
-                                                  child: const Text('Cancel'),
+                                                  child: const Text('取消'),
                                                 ),
                                               ],
                                             );
@@ -3159,7 +3159,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                       }
                                     }
                                   },
-                                  child: const Text('Load ControlNet'),
+                                  child: const Text('加载 ControlNet'),
                                 ),
                               ),
                             ],
@@ -3185,7 +3185,7 @@ class _InpaintingPageState extends State<InpaintingPage>
 
                                         if (decodedImage == null) {
                                           _showTemporaryError(
-                                              'Failed to decode image');
+                                              '无法解码图片');
                                           return;
                                         }
 
@@ -3245,7 +3245,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                               ),
                                               const SizedBox(height: 12),
                                               Text(
-                                                'Load control image',
+                                                '加载控制图片',
                                                 style: TextStyle(
                                                     color: theme
                                                         .colorScheme.primary
@@ -3280,7 +3280,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                                               }
                                             });
                                           },
-                                    label: const Text('Use Canny'),
+                                    label: const Text('使用 Canny'),
                                   ),
                                   if (isCannyProcessing)
                                     Padding(
@@ -3299,7 +3299,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                             ),
                             if (useCanny && _cannyImage != null) ...[
                               const SizedBox(height: 16),
-                              const Text('Canny Edge Detection Result',
+                              const Text('Canny 边缘检测结果',
                                   style:
                                       TextStyle(fontWeight: FontWeight.bold)),
                               const SizedBox(height: 8),
@@ -3322,7 +3322,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                           // Dropdown for Crop/Resize ControlNet Image
                           Row(
                             children: [
-                              const Text('Reference Handling:'),
+                              const Text('参考图处理：'),
                               const SizedBox(width: 8),
                               Expanded(
                                 child: ShadSelect<String>(
@@ -3330,9 +3330,9 @@ class _InpaintingPageState extends State<InpaintingPage>
                                       Text(_controlImageProcessingMode),
                                   options: const [
                                     ShadOption(
-                                        value: 'Resize', child: Text('Resize')),
+                                        value: 'Resize', child: Text('调整大小')),
                                     ShadOption(
-                                        value: 'Crop', child: Text('Crop')),
+                                        value: 'Crop', child: Text('裁剪')),
                                   ],
                                   selectedOptionBuilder: (context, value) =>
                                       Text(value),
@@ -3349,7 +3349,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                           const SizedBox(height: 16),
                           Row(
                             children: [
-                              const Text('Control Strength'),
+                              const Text('控制强度'),
                               const SizedBox(width: 8),
                               Expanded(
                                 child: ShadSlider(
@@ -3410,7 +3410,7 @@ class _InpaintingPageState extends State<InpaintingPage>
             const SizedBox(height: 16),
             Row(
               children: [
-                const Text('Steps'),
+                const Text('步数'),
                 const SizedBox(width: 8),
                 Expanded(
                   child: ShadSlider(
@@ -3427,7 +3427,7 @@ class _InpaintingPageState extends State<InpaintingPage>
             const SizedBox(height: 16),
             Row(
               children: [
-                const Text('Strength'),
+                const Text('强度'),
                 const SizedBox(width: 8),
                 Expanded(
                   child: ShadSlider(
@@ -3444,7 +3444,7 @@ class _InpaintingPageState extends State<InpaintingPage>
             const SizedBox(height: 16),
             Row(
               children: [
-                const Text('Width'),
+                const Text('宽度'),
                 const SizedBox(width: 8),
                 Expanded(
                   child: ShadSelect<int>(
@@ -3459,7 +3459,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                   ),
                 ),
                 const SizedBox(width: 16),
-                const Text('Height'),
+                const Text('高度'),
                 const SizedBox(width: 8),
                 Expanded(
                   child: ShadSelect<int>(
@@ -3477,7 +3477,7 @@ class _InpaintingPageState extends State<InpaintingPage>
               ],
             ),
             const SizedBox(height: 16),
-            const Text('Seed (-1 for random)'),
+            const Text('种子（-1 为随机）'),
             const SizedBox(height: 8),
             ShadInput(
               placeholder: const Text('Seed'),
@@ -3495,7 +3495,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                     // Add async here
                     if (_processor == null) {
                       _handleLoadingError(
-                          'modelError', 'Please load a model first.');
+                          'modelError', '请先加载模型。');
                       // Scroll to top to show the error
                       _scrollController.animateTo(
                         0.0,
@@ -3507,7 +3507,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                     if (_inputImage == null) {
                       // Show temporary error without full reset
                       setState(() {
-                        _loadingError = 'Please select an input image first.';
+                        _loadingError = '请先选择输入图片。';
                         _loadingErrorType = 'inputError';
                       });
                       _loadingErrorTimer?.cancel(); // Cancel previous timer
@@ -3651,10 +3651,10 @@ class _InpaintingPageState extends State<InpaintingPage>
                           print(
                               'Control image processed to $finalControlWidth x $finalControlHeight.');
                         } catch (e) {
-                          print("Error processing control image: $e");
+                          print("处理控制图片出错：$e");
                           // Optionally show an error to the user
                           _showTemporaryError(
-                              'Error processing control image: $e');
+                              '处理控制图片出错：$e');
                           setState(
                               () => isGenerating = false); // Stop generation
                           return; // Prevent calling generateImage
@@ -3736,7 +3736,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                           finalMaskData != null ? effectiveHeight : null,
                     );
                   },
-                  child: const Text('Generate'),
+                  child: const Text('生成'),
                 ),
                 const SizedBox(width: 8), // Add spacing between buttons
                 if (_showLogsButton &&
@@ -3744,7 +3744,7 @@ class _InpaintingPageState extends State<InpaintingPage>
                         .isNotEmpty) // Conditionally show the log button only if logs exist
                   ShadButton.outline(
                     onPressed: _showLogsDialog,
-                    child: const Text('Show Logs'),
+                    child: const Text('显示日志'),
                   ),
               ],
             ),
@@ -3881,7 +3881,7 @@ class _InpaintingPageState extends State<InpaintingPage>
       if (imageBox != null && imageBox.hasSize) {
         _imageDisplaySize = imageBox.size;
       } else {
-        _showTemporaryError('Cannot determine image size for cropping.');
+        _showTemporaryError('无法确定用于裁剪的图片尺寸。');
         return null; // Still can't get size
       }
     }
@@ -3890,7 +3890,7 @@ class _InpaintingPageState extends State<InpaintingPage>
         _cropRect.width <= 0 ||
         _cropRect.height <= 0) {
       print("Warning: Invalid crop rectangle: $_cropRect");
-      _showTemporaryError('Invalid crop area selected.');
+      _showTemporaryError('所选裁剪区域无效。');
       return null;
     }
 
@@ -3900,7 +3900,7 @@ class _InpaintingPageState extends State<InpaintingPage>
 
     if (originalImage == null) {
       print("Error: Could not decode image for cropping.");
-      _showTemporaryError('Error decoding image for cropping');
+      _showTemporaryError('解码用于裁剪的图片出错');
       return null;
     }
 
@@ -3929,7 +3929,7 @@ class _InpaintingPageState extends State<InpaintingPage>
           );
         } catch (e) {
           print("Error creating mask image from bytes: $e");
-          _showTemporaryError('Error processing mask data.');
+          _showTemporaryError('处理蒙版数据出错。');
           // Proceed without mask
         }
       } else {
@@ -3997,7 +3997,7 @@ class _InpaintingPageState extends State<InpaintingPage>
           interpolation: img.Interpolation.nearest,
         );
       } catch (e) {
-        print("Error cropping/resizing mask: $e");
+        print("裁剪/调整蒙版大小出错：$e");
         _showTemporaryError('Error processing mask during crop.');
         // Proceed without mask
       }
@@ -4018,7 +4018,7 @@ class _InpaintingPageState extends State<InpaintingPage>
       }
     } catch (e) {
       print("Error converting resized image to RGB bytes: $e");
-      _showTemporaryError('Error processing final image.');
+      _showTemporaryError('处理最终图片出错。');
       return null;
     }
 
@@ -4086,7 +4086,7 @@ class _InpaintingPageState extends State<InpaintingPage>
       builder: (context) => ShadDialog.alert(
         constraints:
             const BoxConstraints(maxWidth: 600, maxHeight: 500), // Adjust size
-        title: const Text('Generation Logs'),
+        title: const Text('生成日志'),
         description: SizedBox(
           // Constrain the height of the scrollable area
           height: 300, // Adjust height as needed
@@ -4104,7 +4104,7 @@ class _InpaintingPageState extends State<InpaintingPage>
         actions: [
           ShadButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            child: const Text('关闭'),
           ),
         ],
       ),

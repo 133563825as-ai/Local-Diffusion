@@ -31,7 +31,7 @@ void _staticLogCallback(int level, Pointer<Utf8> text, Pointer<Void> data) {
     _globalSendPort?.send({
       'type': 'error',
       'errorType': 'modelError',
-      'message': 'Unsupported model format or corrupted file.',
+      'message': '不支持的模型格式或文件损坏。',
     });
     // Optionally return here if you don't want to send the raw log for these errors
     // return;
@@ -39,7 +39,7 @@ void _staticLogCallback(int level, Pointer<Utf8> text, Pointer<Void> data) {
     _globalSendPort?.send({
       'type': 'error',
       'errorType': 'taesdError',
-      'message': 'Unsupported TAESD model format or corrupted file.',
+      'message': '不支持的 TAESD 模型格式或文件损坏。',
     });
     // return;
   } else if (message
@@ -47,7 +47,7 @@ void _staticLogCallback(int level, Pointer<Utf8> text, Pointer<Void> data) {
     _globalSendPort?.send({
       'type': 'error',
       'errorType': 'controlNetError',
-      'message': 'Unsupported ControlNet model format or corrupted file.',
+      'message': '不支持的 ControlNet 模型格式或文件损坏。',
     });
     // return;
   }
@@ -470,7 +470,7 @@ class StableDiffusionProcessor {
               print("Error initializing model in isolate: $e");
               mainSendPort.send({
                 'type': 'error',
-                'message': "Initialization error: ${e.toString()}"
+                'message': "初始化错误：${e.toString()}"
               });
             } finally {
               // Free allocated memory
@@ -521,7 +521,7 @@ class StableDiffusionProcessor {
               print("Context is null in isolate, cannot generate image");
               mainSendPort.send({
                 'type': 'error',
-                'message': 'Model not initialized in isolate'
+                'message': '模型未在隔离区初始化'
               });
               break; // Exit case
             }
@@ -689,7 +689,7 @@ class StableDiffusionProcessor {
                 mainSendPort.send({
                   'type': 'error',
                   'errorType': 'generationError', // Specific error type
-                  'message': 'Image generation failed in isolate'
+                  'message': '隔离区图片生成失败'
                 });
               }
 
@@ -699,11 +699,11 @@ class StableDiffusionProcessor {
                 'logs': _collectedLogs,
               });
             } catch (e) {
-              print("Error generating image in isolate: $e");
+              print("隔离区生成图片出错：$e");
               mainSendPort.send({
                 'type': 'error',
                 'errorType': 'generationError', // Specific error type
-                'message': "Generation error: ${e.toString()}"
+                'message': "生成错误：${e.toString()}"
               });
               // Send logs even if there was an error during generation
               mainSendPort.send({
@@ -819,7 +819,7 @@ class StableDiffusionProcessor {
   Future<String> saveGeneratedImage(ui.Image image, String prompt, int width,
       int height, SampleMethod sampleMethod) async {
     final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
-    if (bytes == null) return 'Failed to encode image';
+    if (bytes == null) return '无法编码图片';
 
     print("Saving image with seed: ${StableDiffusionService.lastUsedSeed}");
 
@@ -835,8 +835,8 @@ class StableDiffusionProcessor {
       print('Image saved successfully as $fileName');
       return 'Image saved as $fileName';
     } catch (e) {
-      print('Failed to save image: $e');
-      return 'Failed to save image: $e';
+      print('保存图片失败：$e');
+      return '保存图片失败：$e';
     }
   }
 

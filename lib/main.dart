@@ -158,7 +158,7 @@ class PermissionRequiredScreen extends StatelessWidget {
               const SizedBox(height: 32),
               ShadButton(
                 onPressed: onRequestPermission, // Use the passed function
-                child: const Text('Grant Permission'), // Changed button text
+                child: const Text('授予权限'), // Changed button text
               ),
             ],
           ),
@@ -437,7 +437,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
     final decodedImage = img.decodeImage(bytes);
 
     if (decodedImage == null) {
-      _showTemporaryError('Failed to decode image');
+      _showTemporaryError('无法解码图片');
       return;
     }
 
@@ -504,7 +504,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
       onModelLoaded: () {
         setState(() {
           isModelLoading = false;
-          _message = 'Model initialized successfully';
+          _message = '模型初始化成功';
           loadedComponents['Model'] = true;
           loadingText = '';
           _loadingError = ''; // Clear any previous loading errors on success
@@ -542,7 +542,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
         setState(() {
           this.progress = progress.progress;
           status =
-              'Generating image... ${(progress.progress * 100).toInt()}% • Step ${progress.step}/${progress.totalSteps} • ${progress.time.toStringAsFixed(1)}s';
+              '正在生成图片… ${(progress.progress * 100).toInt()}% • 第 ${progress.step}/${progress.totalSteps} 步 • ${progress.time.toStringAsFixed(1)}s';
         });
       },
     );
@@ -567,8 +567,8 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
         _generatedImage = Image.memory(bytes!.buffer.asUint8List());
         // Update status using the extracted time
         status = generationTime != null
-            ? 'Generation completed in $generationTime'
-            : 'Generation complete';
+            ? '生成完成，用时 $generationTime'
+            : '生成完成';
         _showLogsButton = true; // Show the log button
       });
 
@@ -605,7 +605,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
 
       // Handle generation-specific errors separately if needed
       if (errorType == 'generationError') {
-        status = 'Generation failed: $errorMessage';
+        status = '生成失败：$errorMessage';
         isGenerating = false; // Stop generation indicator
       } else {
         // For loading errors, clear status too
@@ -738,13 +738,13 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
       builder: (context) => StatefulBuilder(
         builder: (context, setState) => ShadDialog.alert(
           constraints: const BoxConstraints(maxWidth: 300),
-          title: const Text('Load Model Settings'),
+          title: const Text('加载模型设置'),
           description: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  const Text('Quantization Type:'),
+                  const Text('量化类型：'),
                   const SizedBox(width: 8),
                   Expanded(
                     child: ShadSelect<String>(
@@ -765,7 +765,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
               const SizedBox(height: 16),
               Row(
                 children: [
-                  const Text('Schedule:'),
+                  const Text('调度器：'),
                   const SizedBox(width: 8),
                   Expanded(
                     child: ShadSelect<String>(
@@ -803,7 +803,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                     });
                   }
                 },
-                label: const Text('Use Flash Attention'),
+                label: const Text('使用 Flash Attention'),
               ),
               // Display error message if it exists
               if (flashAttentionError != null)
@@ -824,7 +824,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
           actions: [
             ShadButton.outline(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: const Text('取消'),
             ),
             ShadButton(
               enabled: !(isModelLoading || isGenerating),
@@ -851,7 +851,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                         return ShadDialog.alert(
                           constraints: const BoxConstraints(
                               maxWidth: 400), // Increased dialog width
-                          title: const Text('Select Model'),
+                          title: const Text('选择模型'),
                           description: SizedBox(
                             height: 300,
                             child: Material(
@@ -859,12 +859,12 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                               child: ShadTable.list(
                                 header: const [
                                   ShadTableCell.header(
-                                    child: Text('Model',
+                                    child: Text('模型',
                                         style: TextStyle(fontSize: 16)),
                                   ),
                                   ShadTableCell.header(
                                     alignment: Alignment.centerRight,
-                                    child: Text('Size',
+                                    child: Text('尺寸',
                                         style: TextStyle(fontSize: 16)),
                                   ),
                                 ],
@@ -926,7 +926,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                           actions: [
                             ShadButton.outline(
                               onPressed: () => Navigator.pop(context),
-                              child: const Text('Cancel'),
+                              child: const Text('取消'),
                             ),
                           ],
                         );
@@ -952,7 +952,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                 }
                 Navigator.of(context).pop();
               },
-              child: const Text('Load Model'),
+              child: const Text('加载模型'),
             ),
           ],
         ),
@@ -978,7 +978,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
             tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
           ),
         ),
-        title: const Text('Local Diffusion',
+        title: const Text('本地扩散',
             style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: theme.colorScheme.background,
         elevation: 0,
@@ -989,7 +989,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
               padding: const EdgeInsets.only(right: 8.0),
               // Wrap the button with a Tooltip widget
               child: Tooltip(
-                message: 'Unload Model & Reset', // Use the message property
+                message: '卸载模型并重置', // Use the message property
                 child: ShadButton.ghost(
                   icon: const Icon(
                     LucideIcons
@@ -1004,20 +1004,20 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                           showShadDialog(
                             context: context,
                             builder: (context) => ShadDialog.alert(
-                              title: const Text('Confirm Unload'),
+                              title: const Text('确认卸载'),
                               description: const Text(
-                                  'Are you sure you want to unload the current model and reset all settings?'),
+                                  '确定要卸载当前模型并重置所有设置吗？'),
                               actions: [
                                 ShadButton.outline(
                                   onPressed: () => Navigator.of(context).pop(),
-                                  child: const Text('Cancel'),
+                                  child: const Text('取消'),
                                 ),
                                 ShadButton.destructive(
                                   onPressed: () {
                                     Navigator.of(context).pop(); // Close dialog
                                     _resetState(); // Call the reset function
                                   },
-                                  child: const Text('Confirm Unload'),
+                                  child: const Text('确认卸载'),
                                 ),
                               ],
                             ),
@@ -1061,7 +1061,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
             ListTile(
               leading: const Icon(LucideIcons.type, size: 32),
               title: const Text(
-                'Text to Image',
+                '文生图',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               tileColor: theme.colorScheme.secondary.withOpacity(0.2),
@@ -1072,7 +1072,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
             ListTile(
               leading: const Icon(LucideIcons.images, size: 32),
               title: const Text(
-                'Image to Image',
+                '图生图',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               onTap: () {
@@ -1107,7 +1107,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
             ),
             ListTile(
               leading: const Icon(LucideIcons.aperture, size: 32),
-              title: const Text('Photomaker',
+              title: const Text('PhotoMaker',
                   style: TextStyle(fontWeight: FontWeight.bold)),
               onTap: () {
                 if (_processor != null) {
@@ -1124,7 +1124,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
             ),
             ListTile(
               leading: const Icon(Icons.draw, size: 32),
-              title: const Text('Scribble to Image',
+              title: const Text('涂鸦生图',
                   style: TextStyle(fontWeight: FontWeight.bold)),
               onTap: () {
                 if (_processor != null) {
@@ -1140,7 +1140,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
             ),
             ListTile(
               leading: const Icon(LucideIcons.palette, size: 32),
-              title: const Text('Inpainting',
+              title: const Text('局部重绘',
                   style: TextStyle(fontWeight: FontWeight.bold)),
               onTap: () {
                 if (_processor != null) {
@@ -1157,7 +1157,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
             ),
             ListTile(
               leading: const Icon(LucideIcons.expand, size: 32),
-              title: const Text('Outpainting',
+              title: const Text('外补绘制（扩图）',
                   style: TextStyle(fontWeight: FontWeight.bold)),
               onTap: () {
                 if (_processor != null) {
@@ -1223,7 +1223,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                           TextSpan(
                             children: [
                               TextSpan(
-                                text: '${entry.key} loaded ',
+                                text: '${entry.key} 已加载 ',
                                 style: theme.textTheme.p.copyWith(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold,
@@ -1260,7 +1260,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
             // --- Backend Selection Row ---
             Row(
               children: [
-                const Text('Backend:'),
+                const Text('后端：'),
                 const SizedBox(width: 8),
                 Expanded(
                   child: ShadSelect<String>(
@@ -1283,19 +1283,19 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                           showShadDialog(
                             context: context,
                             builder: (context) => ShadDialog.alert(
-                              title: const Text('Change Backend?'),
+                              title: const Text('切换后端？'),
                               description: const Text(
-                                  'Changing the backend requires unloading the current model and resetting settings. Proceed?'),
+                                  '切换后端需要卸载当前模型并重置设置，是否继续？'),
                               actions: [
                                 ShadButton.outline(
                                   onPressed: () => Navigator.of(context).pop(),
-                                  child: const Text('Cancel'),
+                                  child: const Text('取消'),
                                 ),
                                 ShadButton.destructive(
                                   onPressed: () {
                                     Navigator.of(context).pop(); // Close dialog
                                     print(
-                                        "Backend changed with model loaded. Resetting state.");
+                                        "已加载模型的情况下切换了后端，正在重置状态。");
                                     _resetState(); // Reset state first
                                     print(
                                         "Initializing FFI bindings for: $newBackend");
@@ -1307,9 +1307,9 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                       _cores = FFIBindings.getCores() * 2;
                                     });
                                     print(
-                                        "Backend changed to: $_selectedBackend");
+                                        "后端已切换为：$_selectedBackend");
                                   },
-                                  child: const Text('Confirm Change'),
+                                  child: const Text('确认切换'),
                                 ),
                               ],
                             ),
@@ -1324,7 +1324,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                             // Re-fetch cores
                             _cores = FFIBindings.getCores() * 2;
                           });
-                          print("Backend changed to: $_selectedBackend");
+                          print("后端已切换为：$_selectedBackend");
                         }
                       }
                     },
@@ -1339,7 +1339,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                 ShadButton(
                   enabled: !(isModelLoading || isGenerating),
                   onPressed: showModelLoadDialog,
-                  child: const Text('Load Model'),
+                  child: const Text('加载模型'),
                 ),
                 const SizedBox(width: 8),
                 if (_ramUsage.isNotEmpty)
@@ -1356,36 +1356,36 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                     showShadDialog(
                       context: context,
                       builder: (context) => ShadDialog.alert(
-                        title: const Text('Model Information'),
+                        title: const Text('模型信息'),
                         constraints: const BoxConstraints(maxWidth: 400),
                         description: const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Load an SD or Flux model'),
+                            Text('加载 SD 或 Flux 模型'),
                             SizedBox(height: 8),
-                            Text('Supported models:',
+                            Text('支持的模型：',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
-                            Text('\nSD 1.x, SD 2.x, SDXL, SDXL Turbo'),
+                            Text('\nSD 1.x、SD 2.x、SDXL、SDXL Turbo'),
                             Text('SD 3 Medium/Large, SD 3.5 Medium/Large'),
                             Text('Flux 1 Dev, Flux 1 Schnell, Flux Lite'),
                             SizedBox(height: 16),
-                            Text('Supported formats:',
+                            Text('支持的格式：',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
-                            Text('\nSafeTensors, CKPT, GGUF'),
-                            Text('FP32/FP16 and quantized GGUF formats'),
+                            Text('\nSafeTensors、CKPT、GGUF'),
+                            Text('FP32/FP16 及量化 GGUF 格式'),
                             Text(
                                 'Distilled formats: Turbo, LCM, Lightning, Hyper'),
                             SizedBox(height: 16),
-                            Text('Where to download models?',
+                            Text('在哪里下载模型？',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
-                            Text('\nRecommended websites:'),
+                            Text('\n推荐网站：'),
                             Text('• civitai.com'),
                             Text('• huggingface.co'),
                           ],
                         ),
                         actions: [
                           ShadButton(
-                            child: const Text('Close'),
+                            child: const Text('关闭'),
                             onPressed: () => Navigator.of(context).pop(),
                           ),
                         ],
@@ -1421,7 +1421,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                           builder: (BuildContext context) {
                             return ShadDialog.alert(
                               constraints: const BoxConstraints(maxWidth: 400),
-                              title: const Text('Select TAESD Model'),
+                              title: const Text('选择 TAESD 模型'),
                               description: SizedBox(
                                 height: 300,
                                 child: Material(
@@ -1429,12 +1429,12 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                   child: ShadTable.list(
                                     header: const [
                                       ShadTableCell.header(
-                                        child: Text('Model',
+                                        child: Text('模型',
                                             style: TextStyle(fontSize: 16)),
                                       ),
                                       ShadTableCell.header(
                                         alignment: Alignment.centerRight,
-                                        child: Text('Size',
+                                        child: Text('尺寸',
                                             style: TextStyle(fontSize: 16)),
                                       ),
                                     ],
@@ -1492,7 +1492,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                               actions: [
                                 ShadButton.outline(
                                   onPressed: () => Navigator.pop(context),
-                                  child: const Text('Cancel'),
+                                  child: const Text('取消'),
                                 ),
                               ],
                             );
@@ -1525,7 +1525,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                       }
                     }
                   },
-                  child: const Text('Load TAESD'),
+                  child: const Text('加载 TAESD'),
                 ),
                 const SizedBox(width: 8),
                 // Update the TAESD checkbox onChanged handler:
@@ -1553,7 +1553,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                             }
                           });
                         },
-                  label: const Text('Use TAESD'),
+                  label: const Text('使用 TAESD'),
                 ),
               ],
             ),
@@ -1572,7 +1572,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
               children: [
                 ShadAccordionItem<Map<String, dynamic>>(
                   value: const {},
-                  title: const Text('Advanced Model Options'), // Renamed title
+                  title: const Text('高级模型选项'), // Renamed title
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -1640,7 +1640,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                     });
                                   }
                                 },
-                                child: const Text('Load Lora'),
+                                child: const Text('加载 LoRA'),
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -1756,7 +1756,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                             onChanged: (v) =>
                                 setState(() => _isDiffusionModelType = v),
                             label:
-                                const Text('Standalone Model'), // Renamed label
+                                const Text('独立模型'), // Renamed label
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -1793,7 +1793,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                           return ShadDialog.alert(
                                             constraints: const BoxConstraints(
                                                 maxWidth: 400),
-                                            title: const Text('Select Clip_L'),
+                                            title: const Text('选择 Clip_L'),
                                             description: SizedBox(
                                               height: 300,
                                               child: Material(
@@ -1801,14 +1801,14 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                                 child: ShadTable.list(
                                                   header: const [
                                                     ShadTableCell.header(
-                                                      child: Text('Model',
+                                                      child: Text('模型',
                                                           style: TextStyle(
                                                               fontSize: 16)),
                                                     ),
                                                     ShadTableCell.header(
                                                       alignment:
                                                           Alignment.centerRight,
-                                                      child: Text('Size',
+                                                      child: Text('尺寸',
                                                           style: TextStyle(
                                                               fontSize: 16)),
                                                     ),
@@ -1891,7 +1891,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                               ShadButton.outline(
                                                 onPressed: () =>
                                                     Navigator.pop(context),
-                                                child: const Text('Cancel'),
+                                                child: const Text('取消'),
                                               ),
                                             ],
                                           );
@@ -1925,7 +1925,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                     }
                                   }
                                 },
-                                child: const Text('Load Clip_L'),
+                                child: const Text('加载 Clip_L'),
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -1960,7 +1960,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                           return ShadDialog.alert(
                                             constraints: const BoxConstraints(
                                                 maxWidth: 400),
-                                            title: const Text('Select Clip_G'),
+                                            title: const Text('选择 Clip_G'),
                                             description: SizedBox(
                                               height: 300,
                                               child: Material(
@@ -1968,14 +1968,14 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                                 child: ShadTable.list(
                                                   header: const [
                                                     ShadTableCell.header(
-                                                      child: Text('Model',
+                                                      child: Text('模型',
                                                           style: TextStyle(
                                                               fontSize: 16)),
                                                     ),
                                                     ShadTableCell.header(
                                                       alignment:
                                                           Alignment.centerRight,
-                                                      child: Text('Size',
+                                                      child: Text('尺寸',
                                                           style: TextStyle(
                                                               fontSize: 16)),
                                                     ),
@@ -2058,7 +2058,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                               ShadButton.outline(
                                                 onPressed: () =>
                                                     Navigator.pop(context),
-                                                child: const Text('Cancel'),
+                                                child: const Text('取消'),
                                               ),
                                             ],
                                           );
@@ -2092,7 +2092,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                     }
                                   }
                                 },
-                                child: const Text('Load Clip_G'),
+                                child: const Text('加载 Clip_G'),
                               ),
                             ),
                           ],
@@ -2131,7 +2131,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                           return ShadDialog.alert(
                                             constraints: const BoxConstraints(
                                                 maxWidth: 400),
-                                            title: const Text('Select T5XXL'),
+                                            title: const Text('选择 T5XXL'),
                                             description: SizedBox(
                                               height: 300,
                                               child: Material(
@@ -2139,14 +2139,14 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                                 child: ShadTable.list(
                                                   header: const [
                                                     ShadTableCell.header(
-                                                      child: Text('Model',
+                                                      child: Text('模型',
                                                           style: TextStyle(
                                                               fontSize: 16)),
                                                     ),
                                                     ShadTableCell.header(
                                                       alignment:
                                                           Alignment.centerRight,
-                                                      child: Text('Size',
+                                                      child: Text('尺寸',
                                                           style: TextStyle(
                                                               fontSize: 16)),
                                                     ),
@@ -2229,7 +2229,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                               ShadButton.outline(
                                                 onPressed: () =>
                                                     Navigator.pop(context),
-                                                child: const Text('Cancel'),
+                                                child: const Text('取消'),
                                               ),
                                             ],
                                           );
@@ -2263,7 +2263,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                     }
                                   }
                                 },
-                                child: const Text('Load T5XXL'),
+                                child: const Text('加载 T5XXL'),
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -2302,7 +2302,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                     });
                                   }
                                 },
-                                child: const Text('Load Embed'),
+                                child: const Text('加载 Embedding'),
                               ),
                             ),
                           ],
@@ -2339,7 +2339,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                           return ShadDialog.alert(
                                             constraints: const BoxConstraints(
                                                 maxWidth: 400),
-                                            title: const Text('Select VAE'),
+                                            title: const Text('选择 VAE'),
                                             description: SizedBox(
                                               height: 300,
                                               child: Material(
@@ -2347,14 +2347,14 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                                 child: ShadTable.list(
                                                   header: const [
                                                     ShadTableCell.header(
-                                                      child: Text('Model',
+                                                      child: Text('模型',
                                                           style: TextStyle(
                                                               fontSize: 16)),
                                                     ),
                                                     ShadTableCell.header(
                                                       alignment:
                                                           Alignment.centerRight,
-                                                      child: Text('Size',
+                                                      child: Text('尺寸',
                                                           style: TextStyle(
                                                               fontSize: 16)),
                                                     ),
@@ -2437,7 +2437,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                               ShadButton.outline(
                                                 onPressed: () =>
                                                     Navigator.pop(context),
-                                                child: const Text('Cancel'),
+                                                child: const Text('取消'),
                                               ),
                                             ],
                                           );
@@ -2471,7 +2471,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                     }
                                   }
                                 },
-                                child: const Text('Load VAE'),
+                                child: const Text('加载 VAE'),
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -2482,7 +2482,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                   : (bool v) {
                                       if (_vaePath == null) {
                                         _showTemporaryError(
-                                            'Please load VAE model first');
+                                            '请先加载 VAE 模型');
                                         return;
                                       }
                                       setState(() {
@@ -2506,7 +2506,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                         }
                                       });
                                     },
-                              label: const Text('Use VAE'),
+                              label: const Text('使用 VAE'),
                             ),
                           ],
                         ),
@@ -2520,13 +2520,13 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
             const SizedBox(height: 16),
             ShadInput(
               key: _promptFieldKey,
-              placeholder: const Text('Prompt'),
+              placeholder: const Text('提示词'),
               controller: _promptController,
               onChanged: (String? v) => setState(() => prompt = v ?? ''),
             ),
             const SizedBox(height: 16),
             ShadInput(
-              placeholder: const Text('Negative Prompt'),
+              placeholder: const Text('反向提示词'),
               onChanged: (String? v) =>
                   setState(() => negativePrompt = v ?? ''),
             ),
@@ -2537,7 +2537,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
               children: [
                 ShadAccordionItem<Map<String, dynamic>>(
                   value: const {}, // Unique value for this item
-                  title: const Text('Advanced Sampling Options'),
+                  title: const Text('高级采样选项'),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -2658,7 +2658,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                             ShadInput(
                               controller: _skipLayersController,
                               placeholder:
-                                  const Text('Skip Layers (e.g., 7,8,9)'),
+                                  const Text('跳过层（例如 7,8,9）'),
                               keyboardType: TextInputType.text,
                               // Removed errorText, handled below
                               onChanged: (String? v) {
@@ -2674,7 +2674,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                   setState(() {
                                     // Keep skipLayersText as is, but show error
                                     _skipLayersErrorText =
-                                        'Invalid format (use numbers separated by commas)';
+                                        '格式无效（请用逗号分隔数字）';
                                   });
                                 }
                               },
@@ -2698,7 +2698,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                         // Skip Layer Start Slider
                         Row(
                           children: [
-                            const Text('Skip Layer Start'),
+                            const Text('跳过层开始'),
                             const SizedBox(width: 8),
                             Expanded(
                               child: ShadSlider(
@@ -2721,7 +2721,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                         // Skip Layer End Slider
                         Row(
                           children: [
-                            const Text('Skip Layer End'),
+                            const Text('跳过层结束'),
                             const SizedBox(width: 8),
                             Expanded(
                               child: ShadSlider(
@@ -2751,7 +2751,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
             const SizedBox(height: 16),
             Row(
               children: [
-                const Text('Use ControlNet'),
+                const Text('使用 ControlNet'),
                 const SizedBox(width: 8),
                 ShadSwitch(
                   value: useControlNet,
@@ -2783,7 +2783,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                   );
                                 } else {
                                   print(
-                                      "Enabled ControlNet switch, but no ControlNet model loaded. No reload needed.");
+                                      "已启用 ControlNet 开关，但未加载 ControlNet 模型，无需重新加载。");
                                 }
                               } else {
                                 // Disabling ControlNet
@@ -2809,14 +2809,14 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                   loadedComponents.remove('ControlNet');
                                 } else {
                                   print(
-                                      "Disabled ControlNet switch, but no ControlNet model was loaded anyway. No reload needed.");
+                                      "已禁用 ControlNet 开关，但并未加载 ControlNet 模型，无需重新加载。");
                                   // Still remove the indicator if it somehow exists
                                   loadedComponents.remove('ControlNet');
                                 }
                               }
                             } else {
                               print(
-                                  "ControlNet switch toggled, but no main model loaded. No action taken.");
+                                  "ControlNet 开关已切换，但未加载主模型，未执行任何操作。");
                             }
                           });
                         },
@@ -2830,7 +2830,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                   // Replace the ControlNet options section with this improved version
                   ShadAccordionItem<Map<String, dynamic>>(
                     value: const {},
-                    title: const Text('ControlNet Options'),
+                    title: const Text('ControlNet 选项'),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
@@ -2873,7 +2873,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                               constraints: const BoxConstraints(
                                                   maxWidth: 400),
                                               title: const Text(
-                                                  'Select ControlNet Model'),
+                                                  '选择 ControlNet 模型'),
                                               description: SizedBox(
                                                 height: 300,
                                                 child: Material(
@@ -2881,14 +2881,14 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                                   child: ShadTable.list(
                                                     header: const [
                                                       ShadTableCell.header(
-                                                          child: Text('Model',
+                                                          child: Text('模型',
                                                               style: TextStyle(
                                                                   fontSize:
                                                                       16))),
                                                       ShadTableCell.header(
                                                           alignment: Alignment
                                                               .centerRight,
-                                                          child: Text('Size',
+                                                          child: Text('尺寸',
                                                               style: TextStyle(
                                                                   fontSize:
                                                                       16))),
@@ -2963,7 +2963,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                                 ShadButton.outline(
                                                   onPressed: () =>
                                                       Navigator.pop(context),
-                                                  child: const Text('Cancel'),
+                                                  child: const Text('取消'),
                                                 ),
                                               ],
                                             );
@@ -2997,7 +2997,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                       }
                                     }
                                   },
-                                  child: const Text('Load ControlNet'),
+                                  child: const Text('加载 ControlNet'),
                                 ),
                               ),
                             ],
@@ -3023,7 +3023,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
 
                                         if (decodedImage == null) {
                                           _showTemporaryError(
-                                              'Failed to decode image');
+                                              '无法解码图片');
                                           return;
                                         }
 
@@ -3083,7 +3083,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                               ),
                                               const SizedBox(height: 12),
                                               Text(
-                                                'Load control image',
+                                                '加载控制图片',
                                                 style: TextStyle(
                                                     color: theme
                                                         .colorScheme.primary
@@ -3102,7 +3102,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                             // Dropdown for Crop/Resize
                             Row(
                               children: [
-                                const Text('Reference Handling:'),
+                                const Text('参考图处理：'),
                                 const SizedBox(width: 8),
                                 Expanded(
                                   child: ShadSelect<String>(
@@ -3111,9 +3111,9 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                     options: const [
                                       ShadOption(
                                           value: 'Resize',
-                                          child: Text('Resize')),
+                                          child: Text('调整大小')),
                                       ShadOption(
-                                          value: 'Crop', child: Text('Crop')),
+                                          value: 'Crop', child: Text('裁剪')),
                                     ],
                                     selectedOptionBuilder: (context, value) =>
                                         Text(value),
@@ -3150,7 +3150,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                                               }
                                             });
                                           },
-                                    label: const Text('Use Canny'),
+                                    label: const Text('使用 Canny'),
                                   ),
                                   if (isCannyProcessing)
                                     Padding(
@@ -3169,7 +3169,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                             ),
                             if (useCanny && _cannyImage != null) ...[
                               const SizedBox(height: 16),
-                              const Text('Canny Edge Detection Result',
+                              const Text('Canny 边缘检测结果',
                                   style:
                                       TextStyle(fontWeight: FontWeight.bold)),
                               const SizedBox(height: 8),
@@ -3191,7 +3191,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                           const SizedBox(height: 16),
                           Row(
                             children: [
-                              const Text('Control Strength'),
+                              const Text('控制强度'),
                               const SizedBox(width: 8),
                               Expanded(
                                 child: ShadSlider(
@@ -3254,7 +3254,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
             const SizedBox(height: 16),
             Row(
               children: [
-                const Text('Steps'),
+                const Text('步数'),
                 const SizedBox(width: 8),
                 Expanded(
                   child: ShadSlider(
@@ -3271,7 +3271,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
             const SizedBox(height: 16),
             Row(
               children: [
-                const Text('Width'),
+                const Text('宽度'),
                 const SizedBox(width: 8),
                 Expanded(
                   child: ShadSelect<int>(
@@ -3291,7 +3291,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                   ),
                 ),
                 const SizedBox(width: 16),
-                const Text('Height'),
+                const Text('高度'),
                 const SizedBox(width: 8),
                 Expanded(
                   child: ShadSelect<int>(
@@ -3313,7 +3313,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
               ],
             ),
             const SizedBox(height: 16),
-            const Text('Seed (-1 for random)'),
+            const Text('种子（-1 为随机）'),
             const SizedBox(height: 8),
             ShadInput(
               placeholder: const Text('Seed'),
@@ -3331,7 +3331,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                     if (_processor == null) {
                       // Show error if no model is loaded
                       _handleLoadingError(
-                          'modelError', 'Please load a model first.');
+                          'modelError', '请先加载模型。');
                       // Scroll to top to show the error
                       _scrollController.animateTo(
                         0.0,
@@ -3406,9 +3406,9 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                           print(
                               'Control image processed to $finalControlWidth x $finalControlHeight.');
                         } catch (e) {
-                          print("Error processing control image: $e");
+                          print("处理控制图片出错：$e");
                           _showTemporaryError(
-                              'Error processing control image: $e');
+                              '处理控制图片出错：$e');
                           setState(() => isGenerating = false);
                           return;
                         }
@@ -3472,7 +3472,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                       controlStrength: controlStrength,
                     );
                   },
-                  child: const Text('Generate'),
+                  child: const Text('生成'),
                 ),
                 const SizedBox(width: 8), // Add spacing between buttons
                 if (_showLogsButton &&
@@ -3480,7 +3480,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
                         .isNotEmpty) // Conditionally show the log button only if logs exist
                   ShadButton.outline(
                     onPressed: _showLogsDialog,
-                    child: const Text('Show Logs'),
+                    child: const Text('显示日志'),
                   ),
               ],
             ),
@@ -3510,7 +3510,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
       builder: (context) => ShadDialog.alert(
         constraints:
             const BoxConstraints(maxWidth: 600, maxHeight: 500), // Adjust size
-        title: const Text('Generation Logs'),
+        title: const Text('生成日志'),
         description: SizedBox(
           // Constrain the height of the scrollable area
           height: 300, // Adjust height as needed
@@ -3528,7 +3528,7 @@ class _StableDiffusionAppState extends State<StableDiffusionApp>
         actions: [
           ShadButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            child: const Text('关闭'),
           ),
         ],
       ),

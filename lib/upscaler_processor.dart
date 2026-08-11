@@ -88,7 +88,7 @@ class UpscalerProcessor {
 
     if (!File(modelPath).existsSync()) {
       mainSendPort.send(
-          {'type': 'error', 'message': 'Model file not found: $modelPath'});
+          {'type': 'error', 'message': '未找到模型文件：$modelPath'});
       return;
     }
 
@@ -101,13 +101,13 @@ class UpscalerProcessor {
 
       if (upscalerCtx.address == 0) {
         mainSendPort.send(
-            {'type': 'error', 'message': 'Failed to load upscaler model'});
+            {'type': 'error', 'message': '放大器模型加载失败'});
         return;
       }
     } catch (e) {
       mainSendPort.send({
         'type': 'error',
-        'message': 'Error initializing upscaler context: $e'
+        'message': '初始化放大器上下文出错：$e'
       });
       return;
     }
@@ -174,7 +174,7 @@ class UpscalerProcessor {
             } catch (e) {
               mainSendPort.send({
                 'type': 'error',
-                'message': 'Error during upscale operation: $e'
+                'message': '放大操作出错：$e'
               });
             }
             break;

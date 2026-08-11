@@ -29,7 +29,7 @@ void _staticLogCallback(int level, Pointer<Utf8> text, Pointer<Void> data) {
     _globalSendPort?.send({
       'type': 'error',
       'errorType': 'modelError',
-      'message': 'Unsupported model format or corrupted file.',
+      'message': '不支持的模型格式或文件损坏。',
     });
     // Optionally return here if you don't want to send the raw log for these errors
     // return;
@@ -37,7 +37,7 @@ void _staticLogCallback(int level, Pointer<Utf8> text, Pointer<Void> data) {
     _globalSendPort?.send({
       'type': 'error',
       'errorType': 'taesdError',
-      'message': 'Unsupported TAESD model format or corrupted file.',
+      'message': '不支持的 TAESD 模型格式或文件损坏。',
     });
     // return;
   } else if (message
@@ -45,7 +45,7 @@ void _staticLogCallback(int level, Pointer<Utf8> text, Pointer<Void> data) {
     _globalSendPort?.send({
       'type': 'error',
       'errorType': 'controlNetError',
-      'message': 'Unsupported ControlNet model format or corrupted file.',
+      'message': '不支持的 ControlNet 模型格式或文件损坏。',
     });
     // return;
   }
@@ -481,7 +481,7 @@ class Img2ImgProcessor {
                 }
               }
             } catch (e) {
-              print("Error initializing model: $e");
+              print("初始化模型出错：$e");
               mainSendPort.send({'type': 'error', 'message': e.toString()});
             }
             break;
@@ -706,11 +706,11 @@ class Img2ImgProcessor {
                 }
               } catch (e) {
                 print(
-                    "Error generating image in isolate: $e"); // More specific log
+                    "隔离区生成图片出错：$e"); // More specific log
                 mainSendPort.send({
                   'type': 'error',
                   'errorType': 'generationError', // Specific error type
-                  'message': "Generation error: ${e.toString()}"
+                  'message': "生成错误：${e.toString()}"
                 });
                 // Send logs even if there was an error during generation
                 mainSendPort.send({
@@ -746,7 +746,7 @@ class Img2ImgProcessor {
               print("Context is null in isolate, cannot generate image");
               mainSendPort.send({
                 'type': 'error',
-                'message': 'Model not initialized in isolate'
+                'message': '模型未在隔离区初始化'
               });
             }
             break; // Break for the 'img2img' case
@@ -844,7 +844,7 @@ class Img2ImgProcessor {
   Future<String> saveGeneratedImage(ui.Image image, String prompt, int width,
       int height, SampleMethod sampleMethod) async {
     final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
-    if (bytes == null) return 'Failed to encode image';
+    if (bytes == null) return '无法编码图片';
 
     final seedString = StableDiffusionService.lastUsedSeed != null
         ? '_seed${StableDiffusionService.lastUsedSeed}'
@@ -857,7 +857,7 @@ class Img2ImgProcessor {
       await Gal.putImageBytes(bytes.buffer.asUint8List(), name: fileName);
       return 'Image saved as $fileName';
     } catch (e) {
-      return 'Failed to save image: $e';
+      return '保存图片失败：$e';
     }
   }
 

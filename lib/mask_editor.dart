@@ -129,7 +129,7 @@ class _MaskEditorState extends State<MaskEditor> {
         await maskImage.toByteData(format: ui.ImageByteFormat.rawRgba);
 
     if (byteData == null) {
-      throw Exception('Failed to generate mask data');
+      throw Exception('蒙版数据生成失败');
     }
 
     // Convert RGBA data to single-channel binary mask (only 0 or 255)
@@ -152,7 +152,7 @@ class _MaskEditorState extends State<MaskEditor> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Mask'),
+        title: const Text('创建蒙版'),
         actions: [
           IconButton(
             icon: const Icon(Icons.undo),
@@ -163,7 +163,7 @@ class _MaskEditorState extends State<MaskEditor> {
                     });
                   }
                 : null,
-            tooltip: 'Undo Last Stroke',
+            tooltip: '撤销上一步',
           ),
           IconButton(
             icon: const Icon(Icons.clear_all),
@@ -174,7 +174,7 @@ class _MaskEditorState extends State<MaskEditor> {
                     });
                   }
                 : null,
-            tooltip: 'Clear All',
+            tooltip: '全部清除',
           ),
           IconButton(
             icon: const Icon(Icons.save),
@@ -182,7 +182,7 @@ class _MaskEditorState extends State<MaskEditor> {
               // Return the strokes list instead of generated data
               Navigator.pop(context, strokes);
             },
-            tooltip: 'Save Strokes',
+            tooltip: '保存笔画',
           ),
         ],
       ),
@@ -288,7 +288,7 @@ class _MaskEditorState extends State<MaskEditor> {
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
-                const Text('Brush Size:'),
+                const Text('画笔大小：'),
                 Expanded(
                   child: Slider(
                     value: brushSize,
