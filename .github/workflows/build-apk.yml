@@ -1,31 +1,51 @@
-          name: Build APK
+name: Build APK
+
 on:
-  workflow_dispatch:
+  workflow_dispatch:   # 手动触发
+
 jobs:
   build:
-run-on: ubuntu-最新
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: 操作/设置-java@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
           distribution: zulu
           java-version: '17'
-      - uses: subosito/flutter-action@v2
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: stable
           flutter-version: '3.27.4'
           cache: true
-      - uses: nttld/setup-ndk@v1
+
+      - name: Setup NDK
+        uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
           ndk-version: r27c
           link-to-system: true
-      - run: echo "ANDROID_NDK_HOME=${{steps.setup-ndk.outputs.ndk-path}}" >> $GITHUB_ENV
-      - run: sudo apt-get update && sudo apt-get install -y cmake ninja-build
-      - run: yes | flutter doctor --android-licenses || true
-      - run: flutter酒吧
-      - run: flutter build apk --release
-      - uses: actions/upload-artifact@v4
+
+      - name: Export NDK path
+        run: echo "ANDROID_NDK_HOME=${{ steps.setup-ndk.outputs.ndk-path }}" >> $GITHUB_ENV
+
+      - name: Install CMake and Ninja
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build
+
+      - name: Accept Android licenses
+        run: yes | flutter doctor --android-licenses || true
+
+      - name: Clean project
+        run: flutter clean
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
           name: APK
-          path: build/app/outputs/flutter-apk/*.apk
+          path: build/app/outputs/flutter-apk/   # 或 build/app/outputs/apk/release/
